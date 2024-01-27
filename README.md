@@ -24,7 +24,7 @@ now, if you have the ability to read and already have some experience with using
 
 the list just shows you whatever the hell is loaded into the list, showing the path too.
 
-![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/ed2f81f0-0a18-4578-8bb5-2237a6399ef9)
+![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/b621b4ab-9b6a-4707-acd1-60a5a8987aa8)
 
 
 ### dumb controls LIKE WHY DO YOU NEED THIS TUTORIAL MAN
