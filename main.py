@@ -6,18 +6,91 @@ import webbrowser
 class appxtool:
     def __init__(self, master):
         self.master = master
-        master.title("appx deployment tool")
+        master.title("appx-tools (by peasoup)")
 
         self.appx_list = []
         self.create_widgets()
 
+        self.create_uninstall_widgets()
+
+    def create_uninstall_widgets(self):
+        # uninstall appx files button
+        self.uninstall_appx_button = tk.Button(self.master, text="uninstall packages and bundles", command=self.show_installed_appx_files)
+        self.uninstall_appx_button.grid(row=7, column=0, columnspan=50, padx=5, pady=5, sticky="w")
+
+        # uninstall bundles button
+        #self.uninstall_bundle_button = tk.Button(self.master, text="uninstall bundles", command=self.show_installed_bundles)
+        #self.uninstall_bundle_button.grid(row=7, column=1, padx=5, pady=5, sticky="e")
+
+    def show_installed_appx_files(self):
+        installed_appx_files = self.get_installed_appx_files()
+        self.show_installed_list("installed packages and bundles", installed_appx_files, self.uninstall_appx)
+
+    def show_installed_list(self, title, items, uninstall_callback):
+        installed_list_window = tk.Toplevel(self.master)
+        installed_list_window.title(title)
+
+        # appx files list
+        installed_list = tk.Listbox(installed_list_window, selectmode=tk.MULTIPLE)
+        scrollbar = ttk.Scrollbar(installed_list_window, command=installed_list.yview)
+        installed_list.config(yscrollcommand=scrollbar.set)
+
+        for item in items:
+            installed_list.insert(tk.END, item)
+
+        installed_list.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        scrollbar.grid(row=0, column=1, sticky="ns")
+
+        # uninstall selected button
+        uninstall_button = tk.Button(installed_list_window, text="uninstall selected", command=lambda: uninstall_callback(installed_list))
+        uninstall_button.grid(row=1, column=0, columnspan=2, pady=10)
+
+        # Configure rows and columns to expand with the window size
+        installed_list_window.rowconfigure(0, weight=1)
+        installed_list_window.columnconfigure(0, weight=1)
+
+    def get_installed_appx_files(self):
+        # Retrieve the list of installed appx files using PowerShell
+        try:
+            result = subprocess.run(
+                ["powershell", "Get-AppxPackage | Select-Object Name"],
+                check=True, capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW
+            )
+            appx_packages = [name.strip().replace('\r', '').replace('\n', '').rstrip('. ') for name in result.stdout.strip().split('\n')[2:]]
+            print(appx_packages)
+
+            return appx_packages
+        except subprocess.CalledProcessError:
+            return []
+
+
+    def uninstall_appx(self, installed_list):
+        self.uninstall_selected(installed_list, "appx")
+
+
+    def uninstall_selected(self, installed_list, type):
+        selected_items = [installed_list.get(i) for i in installed_list.curselection()]
+
+        if not selected_items:
+            messagebox.showinfo("you need to select something!!!!", f"no packages selected for uninstallation.")
+            return
+
+        for item in selected_items:
+            try:
+                subprocess.run(["powershell", "Get-AppxPackage", "-Name", item, "| Remove-AppxPackage"], check=True, capture_output=True, creationflags=subprocess.CREATE_NO_WINDOW)
+                messagebox.showinfo("hooray", f"{type.capitalize()} '{item}' uninstalled successfully")
+                installed_list.delete(installed_list.curselection())
+            except subprocess.CalledProcessError as e:
+                messagebox.showerror("ohhh noooo", f"error uninstalling {type} '{item}': {e.stderr}")
+
+
     def create_widgets(self):
         # add appx files button
-        self.add_button = tk.Button(self.master, text="add appx files", command=self.add_appx_files)
+        self.add_button = tk.Button(self.master, text="add package files", command=self.add_appx_files)
         self.add_button.grid(row=0, column=0, padx=5, pady=5, sticky="w")
 
         # download appx files button
-        self.download_button = tk.Button(self.master, text="download appx files from link", command=self.open_download_link)
+        self.download_button = tk.Button(self.master, text="download appx files online", command=self.open_download_link)
         self.download_button.grid(row=0, column=0, padx=5, pady=5, sticky="n", columnspan=2)
 
         # clear all button
@@ -37,7 +110,7 @@ class appxtool:
         ttk.Separator(self.master, orient='horizontal').grid(row=3, column=0, columnspan=2, sticky='ew', pady=5)
 
         # install selected appx files button
-        self.install_button = tk.Button(self.master, text="install selected appx files", command=self.install_selected_appx)
+        self.install_button = tk.Button(self.master, text="install listed package files", command=self.install_selected_appx)
         self.install_button.grid(row=4, column=0, padx=5, pady=5, sticky="w")
 
         # install bundle button
@@ -60,13 +133,13 @@ class appxtool:
         self.master.columnconfigure(2, weight=1)
 
     def add_appx_files(self):
-        files = filedialog.askopenfilenames(title="select appx files", filetypes=[("appx files", "*.appx")])
+        files = filedialog.askopenfilenames(title="select package files", filetypes=[("appx and msix files", "*.appx;*.msix")])
 
         for file_path in files:
             # check if the file is already in the list
             if any(appx["path"] == file_path for appx in self.appx_list):
                 duplicates = [appx["name"] for appx in self.appx_list if appx["path"] == file_path]
-                messagebox.showerror("duplicates found!", f"these appx packages already exist:\n- {', '.join(duplicates)}")
+                messagebox.showerror("that already is there!!!", f"these appx packages already exist:\n- {', '.join(duplicates)}")
             else:
                 self.appx_list.append({"name": file_path.split("/")[-1], "path": file_path})
                 self.refresh_appx_table()
@@ -90,7 +163,7 @@ class appxtool:
         self.clear_console()
         for appx in self.appx_list:
             try:
-                subprocess.run(["powershell", "add-appxpackage", appx["path"]], check=True, capture_output=True)
+                subprocess.run(["powershell", "add-appxpackage", appx["path"]], check=True, capture_output=True, creationflags=subprocess.CREATE_NO_WINDOW)
                 self.console_output(f"installed {appx['name']} successfully.\n")
             except subprocess.CalledProcessError as e:
                 self.console_output(f"error installing {appx['name']}: {e.stderr}\n")
@@ -104,7 +177,7 @@ class appxtool:
         bundle_path = filedialog.askopenfilename(title="select bundle file", filetypes=[("bundle files", "*.appxbundle;*.msixbundle")])
         if bundle_path:
             try:
-                subprocess.run(["powershell", "add-appxpackage", "-path", bundle_path], check=True, capture_output=True)
+                subprocess.run(["powershell", "add-appxpackage", "-path", bundle_path], check=True, capture_output=True, creationflags=subprocess.CREATE_NO_WINDOW)
                 self.console_output(f"installed bundle {bundle_path.split('/')[-1]} successfully.\n")
             except subprocess.CalledProcessError as e:
                 self.console_output(f"error installing bundle: {e.stderr}\n")
@@ -119,8 +192,6 @@ class appxtool:
         self.console_text.insert("end", '\n', 'tag_newline')  # Add a newline after each message
         self.console_text.config(state="disabled")
         self.console_text.see("end")
-
-
 
     def clear_console(self):
         self.console_text.config(state="normal")
