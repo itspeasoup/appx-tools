@@ -18,10 +18,6 @@ class appxtool:
         self.uninstall_appx_button = tk.Button(self.master, text="uninstall packages and bundles", command=self.show_installed_appx_files)
         self.uninstall_appx_button.grid(row=7, column=0, columnspan=50, padx=5, pady=5, sticky="w")
 
-        # uninstall bundles button
-        #self.uninstall_bundle_button = tk.Button(self.master, text="uninstall bundles", command=self.show_installed_bundles)
-        #self.uninstall_bundle_button.grid(row=7, column=1, padx=5, pady=5, sticky="e")
-
     def show_installed_appx_files(self):
         installed_appx_files = self.get_installed_appx_files()
         self.show_installed_list("installed packages and bundles", installed_appx_files, self.uninstall_appx)
