@@ -111,14 +111,20 @@ after that, go back to your gui and click "add appx files" and then select your 
 then, click the "install selected appx files" button. it's going to tell `powershell` to install the package/s into your computer.
 
 
+
 then, click "install bundle" and select your bundle (it is gonna get installed instantly)
 
 ![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/f79397fd-833b-4159-b850-34085d0111a4)
 
 
+> [!IMPORTANT]
+> this actually opens a subprocess, with it being `powershell` again. at that time, the window is going to be **unresponsive** until the bundle gets installed.
+
+
 ## programus removus
 
-this cute little button in the bottom left is a **tool capable of destruction.**
+> [!CAUTION]
+> this cute little button in the bottom left is a **tool capable of destruction.**
 
 ![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/cd653e83-39d7-4110-9334-98f6cb2e681e)
 
