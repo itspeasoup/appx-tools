@@ -8,12 +8,12 @@ basically the series of appx commands but they're slammed in a tkinter gui
 
 when you open the exe file (it takes some time tho), you'll be met with this window:
 
-![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/4051f9a6-0618-4003-be1c-16e408f83605)
+![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/bf059589-0fd4-447a-a85d-d81f8c993441)
 
 
 it's nicely resizable though!
 
-![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/44ab4e42-2575-46b7-be04-b947d5ec6e5f)
+![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/50e14bb7-a6a8-495a-9737-1a431e81117f)
 
 
 
@@ -24,14 +24,16 @@ now, if you have the ability to read and already have some experience with using
 
 the list just shows you whatever the hell is loaded into the list, showing the path too.
 
-![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/c02d058d-7874-43de-9719-0f43e1989612)
+![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/910bbe9b-5316-478a-8e5b-7661baa6eb2f)
+
 
 
 ### dumb controls LIKE WHY DO YOU NEED THIS TUTORIAL MAN
 
 you're gonna see three buttons. the middle button is padded a TINY bit higher than the ones on the sides, intentionally
 
-![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/23ff1614-4bcf-446b-9ae4-6d42af7d459b)
+![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/2e1d953a-566e-4a25-a7e3-8bd85c26cfca)
+
 
 
 these buttons are self-explanatory, with the "add appx files" button... adding the appx files - yes i'm gonna call everything appx files because that's what i am used to, even though there are msix files (yes there IS msix support.)
@@ -48,7 +50,7 @@ these buttons are self-explanatory, with the "add appx files" button... adding t
 
 ### Download Free AppX and MsiX files No Ads
 
-ah, the glory. the ultimate "download appx files from link" button.
+ah, the glory. the ultimate "download appx files online" button.
 
 
 when you click that, the program tells the `webbrowser` package "Hey, open a new tab in the user's default browser with this website" and the `webbrowser` package then responds with "Okay, I'm on it!" and voilà, this [really fucking gross website](https://store.rg-adguard.net/) opens in your default browser.
@@ -106,12 +108,28 @@ after that, go back to your gui and click "add appx files" and then select your 
 ![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/62935ed5-53f5-4ae9-9104-41cfc1ba6c7c)
 
 
-then, click the "install selected appx files" button. it's going to open powershell for a moment or two to install the package into your computer.
+then, click the "install selected appx files" button. it's going to tell `powershell` to install the package/s into your computer.
 
 
-then, click "install bundle" and select your bundle (it is gonna get installed instantly so hehe)
+then, click "install bundle" and select your bundle (it is gonna get installed instantly)
 
 ![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/f79397fd-833b-4159-b850-34085d0111a4)
 
 
-# congratulations your did it goodbye im gonna sleep
+## programus removus
+
+this cute little button in the bottom left is a **tool capable of destruction.**
+
+![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/cd653e83-39d7-4110-9334-98f6cb2e681e)
+
+
+when you click on it, another window opens.
+
+![obrazek](https://github.com/itspeasoup/appx-tools/assets/107713251/693398c8-79ef-4844-a977-88c2598644ed)
+
+
+when you click on a package in this list, it selects that package. you can click on other packages and it selects them too.
+clicking the "uninstall selected" button, well, uninstalls those packages.
+
+
+# congratulations your did it goodbye im gonna slep
